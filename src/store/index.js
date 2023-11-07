@@ -1,3 +1,4 @@
+import axios from "axios";
 import { createStore } from "vuex";
 
 export default createStore({
@@ -472,6 +473,7 @@ export default createStore({
         shipping: 'B-74, Pocket X, Okhla Phase II, Okhla Industrial Estate, Okhla, New Delhi, Delhi 110020'
       }
     },
+    supplier: {}
   },
   getters: {
     getDatas: state => state.datas,
@@ -479,7 +481,8 @@ export default createStore({
     getOrders: state => state.orders,
     getActiveBill: state => state.activeBill,
     getBills: state => state.bills,
-    getBuyers: state => state.buyers
+    getBuyers: state => state.buyers,
+    getSupplier: state => state.supplier
   },
   mutations: {
     selectOrder(state, data) {
@@ -494,6 +497,9 @@ export default createStore({
     hideBill(state) {
       state.activeBill = {};
     },
+    setSupplier(state, data) {
+      state.supplier = data
+    }
   },
   actions: {
     selectOrder({ commit }, data) {
@@ -508,6 +514,13 @@ export default createStore({
     hideBill({ commit }) {
       commit("hideBill");
     },
+    fetchSupplier({ commit }, data) {
+      axios.get('http://192.168.1.183:8000/api/suppliers/' + data)
+        .then(response => {
+          commit('setSupplier', response.data.data)
+        })
+        .catch((error) => { console.error('fetchSupplier', error) })
+    }
   },
   modules: {},
 });

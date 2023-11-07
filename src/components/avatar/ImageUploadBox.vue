@@ -29,6 +29,7 @@
 <script>
 export default {
   name: 'ImageUploadBox',
+  props:['supplier'],
   data() {
     return {
       buttonText: 'Upload File',
@@ -36,6 +37,9 @@ export default {
       isImage: true,
       error: ''
     }
+  },
+  mounted(){
+    this.previewUrl = this.supplier.image
   },
   methods: {
     triggerFileUpload() {

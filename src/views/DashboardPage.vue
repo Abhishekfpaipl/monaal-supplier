@@ -6,7 +6,7 @@
                     <div class="col-6 col-md-6 col-lg-6">
                         <div class="text-start">
                             <p class="m-0">Welcome</p>
-                            <h2>AM Fabrics</h2>
+                            <h2>{{ supplier.name }}</h2>
                         </div>
                     </div>
                     <div class="col-6 col-md-6 col-lg-6">
@@ -21,13 +21,33 @@
         </section>
         <section>
             <div class="container">
-                <div class="row w-100">
-                    <div v-for="(data, index) in datas" :key="index"
-                        class="col-md-3 col-lg-2  p-2 m-2 border-start border-warning border-4"
+                <div class="row g-2">
+                    <div class="col-4 border-start border-warning border-4"
                         style="background-color: rgba(255, 179, 0, 0.3);">
                         <div class="div-box ">
-                            <h2>{{ data.num }}</h2>
-                            <p>{{ data.txt }}</p>
+                            <h2>{{ newOrder }}</h2>
+                            <p>New Orders</p>
+                        </div>
+                    </div>
+                    <div class="col-4 border-start border-warning border-4"
+                        style="background-color: rgba(255, 179, 0, 0.3);">
+                        <div class="div-box ">
+                            <h2>{{ pendingOrder }}</h2>
+                            <p>Pending Orders</p>
+                        </div>
+                    </div>
+                    <div class="col-4 border-start border-warning border-4"
+                        style="background-color: rgba(255, 179, 0, 0.3);">
+                        <div class="div-box ">
+                            <h2>{{ cancelledOrder }}</h2>
+                            <p>Cancelled Orders</p>
+                        </div>
+                    </div>
+                    <div class="col-4 border-start border-warning border-4"
+                        style="background-color: rgba(255, 179, 0, 0.3);">
+                        <div class="div-box ">
+                            <h2>{{ completedOrder }}</h2>
+                            <p>Completed Orders</p>
                         </div>
                     </div>
                 </div>
@@ -44,12 +64,28 @@ export default {
     data() {
         return {
             publicPath: process.env.BASE_URL,
-
+            supplierId: ''
         }
     },
+    mounted() {
+        this.supplierId = this.$route.params.supplierId
+        this.$store.dispatch('fetchSupplier', this.supplierId)
+    },
     computed: {
-        datas() {
-            return this.$store.getters.getDatas;
+        supplier() {
+            return this.$store.getters.getSupplier;
+        },
+        newOrder() {
+            return this.supplier.orders.filter(order => order.status === 'issued').length
+        },
+        pendingOrder() {
+            return this.supplier.orders.filter(order => order.status === 'partial').length
+        },
+        completedOrder() {
+            return this.supplier.orders.filter(order => order.status === 'completed').length
+        },
+        cancelledOrder() {
+            return this.supplier.orders.filter(order => order.status === 'cancelled').length
         },
 
     }

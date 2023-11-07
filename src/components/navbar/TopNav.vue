@@ -1,6 +1,8 @@
 <template>
     <div class="d-flex  bg-light p-2 border-bottom">
-        <img :src="`${publicPath}${logo}`" width="50" style="filter: grayscale(3);">
+        <router-link to="/">
+            <img :src="`${publicPath}${logo}`" width="50" style="filter: grayscale(3);">
+        </router-link>
         <div class="d-flex align-items-end">
             <b class="m-0 fs-3"
                 style="font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;">onaal</b>
